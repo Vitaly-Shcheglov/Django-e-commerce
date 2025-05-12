@@ -64,6 +64,30 @@
         {% endfor %}
     </div>
 
+    <div>
+       {% for product in products %}
+           <!-- карточка товара -->
+       {% endfor %}
+   </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if products.has_previous %}
+                <a href="?page=1">&laquo; первая</a>
+                <a href="?page={{ products.previous_page_number }}">предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ products.number }} из {{ products.paginator.num_pages }}.
+            </span>
+
+            {% if products.has_next %}
+                <a href="?page={{ products.next_page_number }}">следующая</a>
+                <a href="?page={{ products.paginator.num_pages }}">последняя &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-12 col-md">

@@ -2,10 +2,14 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Product
 from django import forms
+from django.core.paginator import Paginator
 
 
 def home(request):
     products = Product.objects.all()
+    paginator = Paginator(products, 10)
+    page_number = request.GET.get('page')
+    products = paginator.get_page(page_number)
     return render(request, 'home.html', {'products': products})
 
 
@@ -27,6 +31,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'category', 'price']
+
 
 def add_product(request):
     if request.method == 'POST':
