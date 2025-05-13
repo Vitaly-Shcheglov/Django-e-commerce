@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProductForm
 from django.http import HttpResponse
 from .models import Product
-from django import forms
 from django.core.paginator import Paginator
 
 
