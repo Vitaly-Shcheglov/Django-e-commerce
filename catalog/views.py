@@ -11,7 +11,7 @@ def home(request):
     paginator = Paginator(products, 10)
     page_number = request.GET.get('page')
     products = paginator.get_page(page_number)
-    return render(request, 'home.html', {'products': products})
+    return render(request, 'catalog/home.html', {'products': products})
 
 
 def contacts(request):
@@ -20,18 +20,12 @@ def contacts(request):
         phone = request.POST.get('phone')
         message = request.POST.get('message')
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, 'contacts.html')
+    return render(request, 'catalog/contacts.html')
 
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'product_detail.html', {'product': product})
-
-
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'description', 'image', 'category', 'price']
+    return render(request, 'catalog/product_detail.html', {'product': product})
 
 
 def add_product(request):
@@ -42,4 +36,4 @@ def add_product(request):
             return redirect('home')
     else:
         form = ProductForm()
-    return render(request, 'add_product.html', {'form': form})
+    return render(request, 'catalog/add_product.html', {'form': form})
