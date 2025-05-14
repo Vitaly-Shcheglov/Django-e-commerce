@@ -46,6 +46,9 @@
 
     <div class="row text-center mt-4">
         <h1>Список товаров</h1>
+        <p>Текущая страница: {{ products.number }}</p>
+        <p>Общее количество страниц: {{ products.paginator.num_pages }}</p>
+        <p>Всего товаров: {{ products.paginator.count }}</p>
         {% for product in products %}
             <div class="col-3">
                 <div class="product-card card mb-4 box-shadow">

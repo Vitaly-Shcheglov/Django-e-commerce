@@ -1,8 +1,8 @@
 from django.views.generic import ListView, DetailView, View, CreateView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product
 from django.http import HttpResponse
-from django.core.paginator import Paginator
+
 
 class HomeView(ListView):
     model = Product
