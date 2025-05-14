@@ -140,3 +140,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 from django.shortcuts import render
 from django.http import HttpResponse
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'  # SMTP-сервер вашего почтового провайдера
+EMAIL_PORT = 587  # Обычно 587 для TLS
+EMAIL_USE_TLS = True  # Использовать TLS
+EMAIL_HOST_USER = 'your_email@example.com'  # Ваша почта
+EMAIL_HOST_PASSWORD = 'your_email_password'  # Пароль к вашей почте
