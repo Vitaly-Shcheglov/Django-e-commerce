@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p><strong>Опубликовано:</strong> {{ post.created_at }}</p>
+        <p><strong>Количество просмотров:</strong> {{ post.views_count }}</p>
+        {% if post.preview_image %}
+            <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" class="img-fluid">
+        {% endif %}
+        <p>{{ post.content }}</p>
+        <a href="{% url 'blog_edit' post.pk %}" class="btn btn-secondary">Редактировать</a>
+        <a href="{% url 'blog_list' %}" class="btn btn-primary">Назад к списку</a>
+    </div>
+{% endblock %}
