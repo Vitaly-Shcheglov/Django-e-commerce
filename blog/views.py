@@ -19,7 +19,7 @@ class BlogDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         obj.views_count += 1
-        if obj.views_count == 2:
+        if obj.views_count == 100:
             send_mail(
                 'Поздравление! Ваша статья достигла 100 просмотров',
                 f'Статья "{obj.title}" теперь имеет 100 просмотров.',
