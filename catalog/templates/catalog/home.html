@@ -23,32 +23,29 @@
         продать</p>
 </div>
 
-<div class="container">
-    <div class="row text-center">
-        <div class="col-3">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$ 140</h1>
-                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>- Неограниченная лицензия</li>
-                        <li>- Поддержка</li>
-                        <li>- Установка на сервер</li>
-                        <li>- Получение обновлений</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--<div class="container">-->
+<!--    <div class="row text-center">-->
+<!--        <div class="col-3">-->
+<!--            <div class="card mb-4 box-shadow">-->
+<!--                <div class="card-header">-->
+<!--                    <h4 class="my-0 font-weight-normal">Удобный сервис рассылок</h4>-->
+<!--                </div>-->
+<!--                <div class="card-body">-->
+<!--                    <h1 class="card-title pricing-card-title">$ 140</h1>-->
+<!--                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">-->
+<!--                        <li>- Неограниченная лицензия</li>-->
+<!--                        <li>- Поддержка</li>-->
+<!--                        <li>- Установка на сервер</li>-->
+<!--                        <li>- Получение обновлений</li>-->
+<!--                    </ul>-->
+<!--                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
     <div class="row text-center mt-4">
         <h1>Список товаров</h1>
-        <p>Текущая страница: {{ products.number }}</p>
-        <p>Общее количество страниц: {{ products.paginator.num_pages }}</p>
-        <p>Всего товаров: {{ products.paginator.count }}</p>
         {% for product in products %}
             <div class="col-3">
                 <div class="product-card card mb-4 box-shadow">
@@ -73,22 +70,18 @@
        {% endfor %}
    </div>
 
-    <div class="pagination">
-        <span class="step-links">
-            {% if products.has_previous %}
-                <a href="?page=1">&laquo; первая</a>
-                <a href="?page={{ products.previous_page_number }}">предыдущая</a>
-            {% endif %}
+    <div class="pagination">-->
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">предыдущая</a>
+        {% endif %}
 
-            <span class="current">
-                Страница {{ products.number }} из {{ products.paginator.num_pages }}.
-            </span>
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.</span>
 
-            {% if products.has_next %}
-                <a href="?page={{ products.next_page_number }}">следующая</a>
-                <a href="?page={{ products.paginator.num_pages }}">последняя &raquo;</a>
-            {% endif %}
-        </span>
+         {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a>
+        {% endif %}
     </div>
 
     <footer class="pt-4 my-md-5 pt-md-5 border-top">

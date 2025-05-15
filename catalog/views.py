@@ -8,7 +8,7 @@ class HomeView(ListView):
     model = Product
     template_name = 'catalog/home.html'
     context_object_name = 'products'
-    paginate_by = 10
+    paginate_by = 1
 
     def get_queryset(self):
         return Product.objects.all()

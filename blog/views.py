@@ -19,12 +19,12 @@ class BlogDetailView(DetailView):
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
         obj.views_count += 1
-        if obj.views_count == 100:
+        if obj.views_count == 2:
             send_mail(
                 'Поздравление! Ваша статья достигла 100 просмотров',
                 f'Статья "{obj.title}" теперь имеет 100 просмотров.',
-                'from@example.com',  # Используйте свой адрес электронной почты
-                ['to@example.com'],  # Замените на адрес, на который хотите отправить уведомление
+                os.getenv('EMAIL_HOST_USER'),   # Используйте свой адрес электронной почты
+                [os.getenv('EMAIL_HOST_USER')],  # Замените на адрес, на который хотите отправить уведомление
             )
         obj.save()
         return obj
