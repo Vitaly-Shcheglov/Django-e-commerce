@@ -1,8 +1,17 @@
 {% extends 'catalog/base.html' %}
 
+{% block title %}{{ product.title }}{% endblock %}
+
 {% block content %}
-    <h1>{{ product.name }}</h1>
-    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-    <p>{{ product.description }}</p>
-    <p>Цена: {{ product.price }} руб.</p>
+    <div class="container">
+        <h1>{{ product.name }}</h1>
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% endif %}
+        <p>{{ product.description }}</p>
+        <p>Цена: {{ product.price }} руб.</p>
+        <a href="{% url 'product_edit' product.pk %}" class="btn btn-secondary">Редактировать</a>
+        <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?');">Удалить</a>
+        <a href="{% url 'product_list' %}" class="btn btn-primary">Назад к списку</a>
+    </div>
 {% endblock %}
