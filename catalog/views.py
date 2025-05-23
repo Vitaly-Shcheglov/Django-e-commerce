@@ -1,5 +1,7 @@
-from django.views.generic import ListView, DetailView, View, CreateView
+from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
 from django.shortcuts import render, redirect
+from .forms import ProductForm
+from django.urls import reverse_lazy
 from .models import Product
 from django.http import HttpResponse
 
@@ -13,6 +15,7 @@ class HomeView(ListView):
     def get_queryset(self):
         return Product.objects.all()
 
+
 class ContactView(View):
     def get(self, request):
         return render(request, 'catalog/contacts.html')
@@ -21,17 +24,50 @@ class ContactView(View):
         name = request.POST.get('name')
         phone = request.POST.get('phone')
         message = request.POST.get('message')
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+
+        if name and phone and message:
+            return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+        else:
+            return HttpResponse("Пожалуйста, заполните все поля!", status=400)
+
 
 class ProductDetailView(DetailView):
     model = Product
+    form_class = ProductForm
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
+
 class AddProductView(CreateView):
     model = Product
-    fields = ['name', 'description', 'price', 'image', 'category']
+    form_class = ProductForm
     template_name = 'catalog/add_product.html'
+    success_url = reverse_lazy('home')
 
-    def get_success_url(self):
-        return redirect('home')
+
+class ProductListView(ListView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_list.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        return Product.objects.all()
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('product_list')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('product_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.object
+        return context

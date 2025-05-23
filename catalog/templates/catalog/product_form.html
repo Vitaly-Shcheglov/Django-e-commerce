@@ -1,0 +1,16 @@
+{{% extends 'catalog/base.html' %}
+
+{% block title %}{% if object %}Редактировать продукт{% else %}Добавить продукт{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% if object %}Редактировать{% else %}Добавить{% endif %} продукт</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{% if object %}Обновить{% else %}Добавить{% endif %}</button>
+            <a href="{% url 'product_list' %}" class="btn btn-primary">Назад к списку</a>
+        </form>
+    </div>
+{% endblock %}
+ 
