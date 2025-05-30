@@ -14,6 +14,9 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
         <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
+        <a class="p-2 btn btn-outline-danger" href="{% url 'logout' %}">Выход</a>
     </nav>
 </div>
 

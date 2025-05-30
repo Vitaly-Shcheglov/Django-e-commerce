@@ -9,6 +9,4 @@ class CustomUser(AbstractUser):
     country = models.CharField(max_length=100, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []  # Можно оставить пустым, если username не требуется
-
-
+    REQUIRED_FIELDS = ['username']
