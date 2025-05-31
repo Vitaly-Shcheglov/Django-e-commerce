@@ -15,10 +15,7 @@ class UserRegisterView(CreateView):
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
-        user = form.save(commit=False)
-        user.set_password(form.cleaned_data['password'])
-        user.save()
-        login(self.request, user)
+        user = form.save()
 
         send_mail(
             'Добро пожаловать!',
@@ -59,9 +56,3 @@ def profile_edit(request):
 @login_required
 def profile_view(request):
     return render(request, 'users/profile.html', {'user': request.user})
-
-
-@login_required
-def custom_logout(request):
-    logout(request)
-    return render(request, 'users/logout.html')

@@ -16,7 +16,10 @@
         <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
-        <a class="p-2 btn btn-outline-danger" href="{% url 'logout' %}">Выход</a>
+        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Выход</button>
+        </form>
     </nav>
 </div>
 
