@@ -11,23 +11,6 @@ from django.core.mail import BadHeaderError
 from smtplib import SMTPAuthenticationError
 
 
-# class UserRegisterView(CreateView):
-#     form_class = UserRegistrationForm
-#     template_name = 'users/register.html'
-#     success_url = reverse_lazy('login')
-#
-#     def form_valid(self, form):
-#         user = form.save()
-#
-#         send_mail(
-#             'Добро пожаловать!',
-#             'Спасибо за регистрацию на нашем сайте.',
-#             'from@example.com',
-#             [user.email],
-#             fail_silently=False,
-#         )
-#
-#         return super().form_valid(form)
 class UserRegisterView(CreateView):
     form_class = UserRegistrationForm
     template_name = 'users/register.html'
