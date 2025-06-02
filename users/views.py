@@ -7,8 +7,27 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
+from django.core.mail import BadHeaderError
+from smtplib import SMTPAuthenticationError
 
 
+# class UserRegisterView(CreateView):
+#     form_class = UserRegistrationForm
+#     template_name = 'users/register.html'
+#     success_url = reverse_lazy('login')
+#
+#     def form_valid(self, form):
+#         user = form.save()
+#
+#         send_mail(
+#             'Добро пожаловать!',
+#             'Спасибо за регистрацию на нашем сайте.',
+#             'from@example.com',
+#             [user.email],
+#             fail_silently=False,
+#         )
+#
+#         return super().form_valid(form)
 class UserRegisterView(CreateView):
     form_class = UserRegistrationForm
     template_name = 'users/register.html'
@@ -17,13 +36,20 @@ class UserRegisterView(CreateView):
     def form_valid(self, form):
         user = form.save()
 
-        send_mail(
-            'Добро пожаловать!',
-            'Спасибо за регистрацию на нашем сайте.',
-            'from@example.com',
-            [user.email],
-            fail_silently=False,
-        )
+        try:
+            send_mail(
+                'Добро пожаловать!',
+                'Спасибо за регистрацию на нашем сайте.',
+                'from@example.com',  # Замените на ваш реальный адрес
+                [user.email],
+                fail_silently=False,
+            )
+        except SMTPAuthenticationError:
+            print("Ошибка аутентификации SMTP: неверный пользователь или пароль.")
+        except BadHeaderError:
+            print("Некорректный заголовок письма.")
+        except Exception as e:
+            print(f"Ошибка при отправке письма: {e}")
 
         return super().form_valid(form)
 
