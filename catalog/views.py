@@ -4,6 +4,8 @@ from .forms import ProductForm
 from django.urls import reverse_lazy
 from .models import Product
 from django.http import HttpResponse
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(ListView):
@@ -16,7 +18,7 @@ class HomeView(ListView):
         return Product.objects.all()
 
 
-class ContactView(View):
+class ContactView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'catalog/contacts.html')
 
@@ -31,21 +33,21 @@ class ContactView(View):
             return HttpResponse("Пожалуйста, заполните все поля!", status=400)
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
 
-class AddProductView(CreateView):
+class AddProductView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/add_product.html'
     success_url = reverse_lazy('home')
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin,ListView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_list.html'
@@ -55,14 +57,14 @@ class ProductListView(ListView):
         return Product.objects.all()
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('product_list')
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
