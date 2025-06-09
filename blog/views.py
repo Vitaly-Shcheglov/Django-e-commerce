@@ -1,6 +1,7 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import BlogPost
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class BlogListView(ListView):
@@ -42,6 +43,9 @@ class BlogUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('blog_detail', kwargs={'pk': self.object.pk})
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='Контент-менеджер').exists()
 
 class BlogDeleteView(DeleteView):
     model = BlogPost

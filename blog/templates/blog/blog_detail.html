@@ -11,7 +11,18 @@
             <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" class="img-fluid">
         {% endif %}
         <p>{{ post.content }}</p>
-        <a href="{% url 'blog_edit' post.pk %}" class="btn btn-secondary">Редактировать</a>
+
+        {% for group in request.user.groups.all %}
+            {% if group.name == "Контент-менеджер" %}
+                <a href="{% url 'blog_post_edit' post.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                <form action="{% url 'blog_post_delete' post.pk %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                </form>
+            {% endif %}
+        {% endfor %}
+
         <a href="{% url 'blog_list' %}" class="btn btn-primary">Назад к списку</a>
     </div>
 {% endblock %}
+

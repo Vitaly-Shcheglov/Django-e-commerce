@@ -1,11 +1,11 @@
 from django.views.generic import ListView, DetailView, View, CreateView, UpdateView, DeleteView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ProductForm
 from django.urls import reverse_lazy
 from .models import Product
 from django.http import HttpResponse
 from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 
 
 class HomeView(ListView):
@@ -15,7 +15,7 @@ class HomeView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Product.objects.all()
+        return Product.objects.filter(is_published=True)
 
 
 class ContactView(LoginRequiredMixin, View):
@@ -44,7 +44,12 @@ class AddProductView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/add_product.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('product_list')
+
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        form.instance.is_published = False
+        return super().form_valid(form)
 
 
 class ProductListView(LoginRequiredMixin,ListView):
@@ -63,13 +68,42 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'catalog/product_form.html'
     success_url = reverse_lazy('product_list')
 
+    def test_func(self):
+        product = self.get_object()
+        return self.request.user == product.owner or self.request.user.groups.filter(
+            name='Модератор продуктов').exists()
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('product_list')
+    permission_required = 'catalog.can_delete_product'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['post'] = self.object
         return context
+
+    def test_func(self):
+        product = self.get_object()
+        return self.request.user == product.owner or self.request.user.groups.filter(
+            name='Модератор продуктов').exists()
+
+
+class PublishProductView(View):
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk, owner=request.user)
+        product.is_published = True
+        product.save()
+        return redirect('product_list')
+
+
+class UnpublishProductView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'catalog.can_unpublish_product'
+
+    def post(self, request, pk):
+        product = get_object_or_404(Product, pk=pk, owner=request.user)
+        product.is_published = False
+        product.save()
+        return redirect('product_list')
