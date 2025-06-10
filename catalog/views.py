@@ -71,7 +71,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     def test_func(self):
         product = self.get_object()
         return self.request.user == product.owner or self.request.user.groups.filter(
-            name='Модератор продуктов').exists()
+            name='Product moderator group').exists()
 
 
 class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
@@ -88,7 +88,7 @@ class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     def test_func(self):
         product = self.get_object()
         return self.request.user == product.owner or self.request.user.groups.filter(
-            name='Модератор продуктов').exists()
+            name='Product moderator group').exists()
 
 
 class PublishProductView(View):
@@ -99,11 +99,20 @@ class PublishProductView(View):
         return redirect('product_list')
 
 
-class UnpublishProductView(LoginRequiredMixin, PermissionRequiredMixin, View):
+class UnpublishProductView(LoginRequiredMixin, UserPassesTestMixin, View):
     permission_required = 'catalog.can_unpublish_product'
 
     def post(self, request, pk):
-        product = get_object_or_404(Product, pk=pk, owner=request.user)
-        product.is_published = False
-        product.save()
-        return redirect('product_list')
+        product = get_object_or_404(Product, pk=pk)
+
+        if request.user == product.owner or request.user.groups.filter(name='Product moderator group').exists():
+            product.is_published = False
+            product.save()
+            return redirect('product_list')
+        else:
+            return HttpResponseForbidden("У вас нет прав для отмены публикации этого продукта.")
+
+    def test_func(self):
+        product = get_object_or_404(Product, pk=self.kwargs['pk'])
+        return self.request.user == product.owner or self.request.user.groups.filter(
+            name='Product moderator group').exists()
