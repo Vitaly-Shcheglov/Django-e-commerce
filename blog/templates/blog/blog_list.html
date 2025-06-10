@@ -11,7 +11,7 @@
                     <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
                     <p class="text-muted">{{ post.created_at }} - {{ post.views_count }} просмотров</p>
                     {% for group in request.user.groups.all %}
-                        {% if group.name == "Контент-менеджер" %}
+                        {% if group.name == "Content manager group" %}
                             <a href="{% url 'blog_post_edit' post.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
                             <form action="{% url 'blog_post_delete' post.pk %}" method="POST" style="display:inline;">
                                 {% csrf_token %}

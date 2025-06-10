@@ -13,7 +13,9 @@ class BlogPost(models.Model):
         verbose_name = "Блоговая запись"
         verbose_name_plural = "Блоговые записи"
         permissions = (
-            ('can_manage_blog', 'Can manage blog posts'),
+            ('can_change_blogpost', 'Can change blog post'),
+            ('can_delete_blogpost', 'Can delete blog post'),
+            ('can_view_blogpost', 'Can view blog post'),
         )
 
 

@@ -3,5 +3,5 @@ from .models import CustomUser
 
 # admin.site.register(CustomUser)
 @admin.register(CustomUser)
-class AutorAdmin(admin.ModelAdminodel):
+class AutorAdmin(admin.ModelAdmin):
     exclude = ('password',)
