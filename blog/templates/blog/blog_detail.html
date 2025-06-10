@@ -1,4 +1,5 @@
 {% extends 'catalog/base.html' %}
+{% load custom_filters %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -7,21 +8,25 @@
         <h1>{{ post.title }}</h1>
         <p><strong>Опубликовано:</strong> {{ post.created_at }}</p>
         <p><strong>Количество просмотров:</strong> {{ post.views_count }}</p>
+
         {% if post.preview_image %}
             <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" class="img-fluid">
         {% endif %}
+
         <p>{{ post.content }}</p>
 
-        {% for group in request.user.groups.all %}
-            {% if group.name == "Content manager group" %}
-                <a href="{% url 'blog_post_edit' post.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
-                <form action="{% url 'blog_post_delete' post.pk %}" method="POST" style="display:inline;">
+        {% if request.user|is_group:"Content manager group" %}
+            <div class="post-actions">
+                <form action="{% url 'blog_edit' post.pk %}" method="POST" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                    <button type="submit" class="btn btn-warning">Редактировать</button>
                 </form>
-            {% endif %}
-        {% endfor %}
-
+                <form action="{% url 'blog_delete' post.pk %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот пост?');">Удалить</button>
+                </form>
+            </div>
+        {% endif %}
         <a href="{% url 'blog_list' %}" class="btn btn-primary">Назад к списку</a>
     </div>
 {% endblock %}
