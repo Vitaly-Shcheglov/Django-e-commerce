@@ -1,17 +1,46 @@
 {% extends 'catalog/base.html' %}
+{% load custom_filters %}
 
-{% block title %}{{ product.title }}{% endblock %}
+
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <h1>{{ product.name }}</h1>
         {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
         {% endif %}
         <p>{{ product.description }}</p>
         <p>Цена: {{ product.price }} руб.</p>
-        <a href="{% url 'product_edit' product.pk %}" class="btn btn-secondary">Редактировать</a>
-        <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?');">Удалить</a>
+
+        {% if product.is_published %}
+            <p class="text-success">Статус: Продукт опубликован.</p>
+        {% else %}
+            <p class="text-danger">Статус: Продукт не опубликован.</p>
+        {% endif %}
+
+        {% if request.user|is_group:"Product moderator group" %}
+            <form action="{% url 'unpublish_product' product.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Отменить публикацию</button>
+            </form>
+            <form action="{% url 'product_delete' product.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?');">Удалить</button>
+            </form>
+        {% endif %}
+
+        {% if request.user == product.owner %}
+            <form action="{% url 'publish_product' product.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Опубликовать</button>
+            </form>
+            <a href="{% url 'product_edit' product.pk %}" class="btn btn-secondary">Редактировать</a>
+            <form action="{% url 'product_delete' product.pk %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?');">Удалить</button>
+            </form>
+        {% endif %}
         <a href="{% url 'product_list' %}" class="btn btn-primary">Назад к списку</a>
     </div>
 {% endblock %}
