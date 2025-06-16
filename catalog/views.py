@@ -6,6 +6,8 @@ from .models import Product
 from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 
 class HomeView(ListView):
@@ -33,6 +35,7 @@ class ContactView(LoginRequiredMixin, View):
             return HttpResponse("Пожалуйста, заполните все поля!", status=400)
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     form_class = ProductForm
