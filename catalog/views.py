@@ -2,7 +2,7 @@ from django.views.generic import ListView, DetailView, View, CreateView, UpdateV
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ProductForm
 from django.urls import reverse_lazy
-from .models import Product
+from .models import Product, Category
 from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
@@ -119,3 +119,21 @@ class UnpublishProductView(LoginRequiredMixin, UserPassesTestMixin, View):
         product = get_object_or_404(Product, pk=self.kwargs['pk'])
         return self.request.user == product.owner or self.request.user.groups.filter(
             name='Product moderator group').exists()
+
+
+class ProductsInCategoryView(ListView):
+    model = Product
+    template_name = 'catalog/products_in_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        """Возвращает список всех продуктов в указанной категории."""
+        category_pk = self.kwargs['pk']
+        return Product.objects.filter(category_id=category_pk)
+
+    def get_context_data(self, **kwargs):
+        """Добавляет объект категории в контекст."""
+        context = super().get_context_data(**kwargs)
+        category_pk = self.kwargs['pk']
+        context['category'] = get_object_or_404(Category, pk=category_pk)
+        return context

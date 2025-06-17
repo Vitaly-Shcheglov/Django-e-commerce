@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Меню</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 </head>
 <body>
     <nav>
@@ -24,8 +25,32 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Категории
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                    {% for category in categories %}
+                        <li><a class="dropdown-item" href="{% url 'products_in_category' category.pk %}">{{ category.name }}</a></li>
+                    {% empty %}
+                        <li><a class="dropdown-item" href="#">Нет категорий</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
         </ul>
     </nav>
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        // Используем jQuery noConflict
+        var jQuery = jQuery.noConflict();
+        jQuery(document).ready(function() {
+            // Пример использования jQuery, если потребуется
+            jQuery("#categoriesDropdown").on("click", function() {
+                // Ваш код здесь, например:
+                console.log("Категории нажаты!");
+            });
+        });
+    </script>
 </body>
 </html>
