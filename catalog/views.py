@@ -8,6 +8,8 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from django.core.cache import cache
+from .services import ProductService
 
 
 class HomeView(ListView):
@@ -129,7 +131,7 @@ class ProductsInCategoryView(ListView):
     def get_queryset(self):
         """Возвращает список всех продуктов в указанной категории."""
         category_pk = self.kwargs['pk']
-        return Product.objects.filter(category_id=category_pk)
+        return ProductService.get_products_by_category(category_pk)
 
     def get_context_data(self, **kwargs):
         """Добавляет объект категории в контекст."""
