@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import HomeView, ContactView, ProductDetailView, AddProductView, ProductListView, ProductUpdateView, ProductDeleteView, PublishProductView, UnpublishProductView
+from .views import HomeView, ContactView, ProductDetailView, AddProductView, ProductListView, ProductUpdateView, ProductDeleteView, PublishProductView, UnpublishProductView, ProductsInCategoryView
 
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
     path('products/publish/<int:pk>/', PublishProductView.as_view(), name='publish_product'),
     path('products/unpublish/<int:pk>/', UnpublishProductView.as_view(), name='unpublish_product'),
+    path('category/<int:pk>/products/', ProductsInCategoryView.as_view(), name='products_in_category'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

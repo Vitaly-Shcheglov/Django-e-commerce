@@ -1,0 +1,19 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Продукты в категории: {{ category.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Продукты в категории: {{ category.name }}</h1>
+        <ul class="list-group">
+            {% for product in products %}
+                <li class="list-group-item">
+                    <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                </li>
+            {% empty %}
+                <p>Продукты отсутствуют.</p>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Вернуться на главную</a>
+    </div>
+{% endblock %}
