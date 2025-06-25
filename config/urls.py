@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('catalog.urls')),
     path('blogs/', include('blog.urls')),
     path('users/', include('users.urls')),
+    path('newsletters/', include('newsletters.urls')),
 ]
 
 if settings.DEBUG:
