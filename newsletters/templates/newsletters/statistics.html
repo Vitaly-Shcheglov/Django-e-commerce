@@ -1,0 +1,12 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Статистика рассылок{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Статистика рассылок</h1>
+        <p>Количество успешных попыток рассылок: {{ successful_attempts }}</p>
+        <p>Количество неуспешных попыток рассылок: {{ unsuccessful_attempts }}</p>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Назад на главную</a>
+    </div>
+{% endblock %}

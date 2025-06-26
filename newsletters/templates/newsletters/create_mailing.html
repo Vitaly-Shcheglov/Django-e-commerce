@@ -1,15 +1,15 @@
- {% extends 'catalog/base.html' %}
+{% extends 'catalog/base.html' %}
 
-{% block title %}Добавить получателя{% endblock %}
+{% block title %}Создать рассылку{% endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>Добавить получателя</h1>
+        <h1>Создать рассылку</h1>
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Сохранить</button>
         </form>
-        <a href="{% url 'recipient_list' %}" class="btn btn-secondary mt-3">Назад к списку</a>
+        <a href="{% url 'mailing_list' %}" class="btn btn-secondary mt-3">Назад к списку рассылок</a>
     </div>
 {% endblock %}

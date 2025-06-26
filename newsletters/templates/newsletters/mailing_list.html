@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Список рассылок{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Список рассылок</h1>
+        <ul>
+            {% for mailing in mailings %}
+                <li>{{ mailing.message.subject }} - {{ mailing.status }}</li>
+            {% empty %}
+                <li>Нет рассылок.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'create_mailing' %}" class="btn btn-primary mt-3">Создать новую рассылку</a>
+    </div>
+{% endblock %}

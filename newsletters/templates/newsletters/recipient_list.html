@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-   <html lang="ru">
-   <head>
-       <meta charset="utf-8">
-       <title>Список получателей</title>
-   </head>
-   <body>
-       <h1>Список получателей</h1>
-       <ul>
-           {% for recipient in recipients %}
-               <li>{{ recipient.full_name }} - {{ recipient.email }}</li>
-           {% empty %}
-               <li>Нет получателей.</li>
-           {% endfor %}
-       </ul>
-       <a href="{% url 'create_recipient' %}">Добавить получателя</a>
-   </body>
-   </html>
+{% extends 'catalog/base.html' %}
+
+{% block title %}Список получателей{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Список получателей</h1>
+        <ul class="list-group">
+            {% for recipient in recipients %}
+                <li class="list-group-item">{{ recipient.full_name }} - {{ recipient.email }}</li>
+            {% empty %}
+                <li class="list-group-item">Нет получателей.</li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'create_recipient' %}" class="btn btn-primary mt-3">Добавить получателя</a>
+    </div>
+{% endblock %}
