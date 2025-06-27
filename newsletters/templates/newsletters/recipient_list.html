@@ -7,11 +7,14 @@
         <h1>Список получателей</h1>
         <ul class="list-group">
             {% for recipient in recipients %}
-                <li class="list-group-item">{{ recipient.full_name }} - {{ recipient.email }}</li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'recipient_detail' recipient.id %}">{{ recipient.full_name }}</a>
+                </li>
             {% empty %}
                 <li class="list-group-item">Нет получателей.</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'create_recipient' %}" class="btn btn-primary mt-3">Добавить получателя</a>
+        <a href="{% url 'create_recipient' %}" class="btn btn-primary mt-3">Создать нового получателя</a>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">Назад на главную</a>
     </div>
 {% endblock %}

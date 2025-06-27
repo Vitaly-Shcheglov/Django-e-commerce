@@ -13,7 +13,7 @@ class Command(BaseCommand):
         view_permission = Permission.objects.get(codename='can_view_blogpost')
 
         content_manager_group.permissions.add(change_permission, delete_permission, view_permission)
-        user = CustomUser.objects.get(email=' example@forexample.com') # Замените на фактический email зарегистрированного пользователя
+        user = CustomUser.objects.get(email='hallovit@yandex.ru') # Замените на фактический email зарегистрированного пользователя
         user.groups.add(content_manager_group)
 
         product_moderator_group, created = Group.objects.get_or_create(name='Product moderator group')
@@ -23,5 +23,16 @@ class Command(BaseCommand):
         product_moderator_group.permissions.add(can_unpublish_permission, can_delete_permission)
         user = CustomUser.objects.get(email='yuristresurs@mail.ru')
         user.groups.add(product_moderator_group)
+
+        mailing_manager_group, created = Group.objects.get_or_create(name='Mailing Manager')
+        view_recipient = Permission.objects.get(codename='can_view_recipient')
+        edit_recipient = Permission.objects.get(codename='can_edit_recipient')
+        delete_recipient = Permission.objects.get(codename='can_delete_recipient')
+        view_message = Permission.objects.get(codename='can_view_message')
+        edit_message = Permission.objects.get(codename='can_edit_message')
+        delete_message = Permission.objects.get(codename='can_delete_message')
+        view_mailing = Permission.objects.get(codename='can_view_mailing')
+        edit_mailing = Permission.objects.get(codename='can_edit_mailing')
+        delete_mailing = Permission.objects.get(codename='can_delete_mailing')
 
         self.stdout.write(self.style.SUCCESS('Successfully created groups and assigned permissions.'))

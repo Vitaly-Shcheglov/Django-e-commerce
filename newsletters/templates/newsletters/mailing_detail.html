@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Детали рассылки{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ mailing.title }}</h1>
+        <p><strong>Описание:</strong> {{ mailing.description }}</p>
+        <p><strong>Дата создания:</strong> {{ mailing.created_at }}</p>
+        
+        <h2>Получатели:</h2>
+        <ul>
+            {% for recipient in mailing.recipients.all %}
+                <li>{{ recipient.full_name }} ({{ recipient.email }})</li>
+            {% empty %}
+                <li>Нет получателей для этой рассылки.</li>
+            {% endfor %}
+        </ul>
+
+        <div class="mt-4">
+            <a href="{% url 'edit_mailing' mailing.id %}" class="btn btn-secondary">Изменить</a>
+            <form action="{% url 'delete_mailing' mailing.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+            <a href="{% url 'mailing_list' %}" class="btn btn-primary">Назад к списку рассылок</a>
+        </div>
+    </div>
+{% endblock %}
