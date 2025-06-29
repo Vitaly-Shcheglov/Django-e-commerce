@@ -12,6 +12,7 @@ psycopg2-binary = "^2.9.10"
 python-dotenv = "^1.1.0"
 pillow = "^11.2.1"
 ipython = "^9.2.0"
+redis = "^6.2.0"
 
 
 [tool.poetry.group.lint.dependencies]
@@ -21,7 +22,7 @@ black = "^25.1.0"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-tool.black]
+[tool.black]
 # Максимальная длина строки
 line-length = 119
 # Файлы, которые не нужно форматировать

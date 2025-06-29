@@ -34,11 +34,6 @@ class HomeView(ListView):
 
         return context
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context.update(HomePageService.get_home_data())
-    #     return context
-
 
 class ContactView(LoginRequiredMixin, View):
     def get(self, request):

@@ -6,8 +6,10 @@
     <div class="container">
         <h1>{{ mailing.title }}</h1>
         <p><strong>Описание:</strong> {{ mailing.description }}</p>
-        <p><strong>Дата создания:</strong> {{ mailing.created_at }}</p>
-        
+        <p><strong>Статус:</strong> {{ mailing.get_status_display }}</p>
+        <p><strong>Дата начала:</strong> {{ mailing.start_time }}</p>
+        <p><strong>Дата окончания:</strong> {{ mailing.end_time }}</p>
+
         <h2>Получатели:</h2>
         <ul>
             {% for recipient in mailing.recipients.all %}
@@ -22,6 +24,10 @@
             <form action="{% url 'delete_mailing' mailing.id %}" method="POST" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+            <form action="{% url 'send_mailing' mailing.id %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Отправить рассылку</button>
             </form>
             <a href="{% url 'mailing_list' %}" class="btn btn-primary">Назад к списку рассылок</a>
         </div>

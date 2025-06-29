@@ -13,7 +13,7 @@ class Command(BaseCommand):
         view_permission = Permission.objects.get(codename='can_view_blogpost')
 
         content_manager_group.permissions.add(change_permission, delete_permission, view_permission)
-        user = CustomUser.objects.get(email='hallovit@yandex.ru') # Замените на фактический email зарегистрированного пользователя
+        user = CustomUser.objects.get(email='yuristresurs@mail.ru') # Замените на фактический email зарегистрированного пользователя
         user.groups.add(content_manager_group)
 
         product_moderator_group, created = Group.objects.get_or_create(name='Product moderator group')
