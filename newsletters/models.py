@@ -74,10 +74,3 @@ class SendingAttempt(models.Model):
 
     def __str__(self):
         return f"{self.status} at {self.attempt_time}"
-
-class TechnicalTask(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-
-    def __str__(self):
-        return self.title

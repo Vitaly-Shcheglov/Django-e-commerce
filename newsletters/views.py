@@ -2,7 +2,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, DetailView, View, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Recipient, Message, Mailing, SendingAttempt, TechnicalTask
+from .models import Recipient, Message, Mailing, SendingAttempt
 from .forms import RecipientForm, MessageForm, MailingForm, SendingAttemptForm
 from django.urls import reverse_lazy, path
 from django.utils.decorators import method_decorator
@@ -183,10 +183,5 @@ def send_mailing(request, pk):
     messages.success(request, "Рассылка успешно отправлена!")
     return redirect('mailing_list')
 
-def technical_task_list(request):
-    tasks = TechnicalTask.objects.all()
-    return render(request, 'newsletters/technical_task_list.html', {'tasks': tasks})
-
-def technical_task_detail(request, pk):
-    task = get_object_or_404(TechnicalTask, pk=pk)
-    return render
+def task_detail(request):
+    return render(request, 'newsletters/task_detail.html', {})

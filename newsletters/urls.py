@@ -16,6 +16,7 @@ from .views import (
     RecipientDetailView,
     RecipientEditView,
     RecipientDeleteView,
+    task_detail,
 )
 
 urlpatterns = [
@@ -37,4 +38,5 @@ urlpatterns = [
     path('mailings/delete/<int:pk>/', MailingDeleteView.as_view(), name='delete_mailing'),
     path('mailings/send/<int:pk>/', lambda request, pk: __import__('newsletters.views').send_mailing(request, pk),
          name='send_mailing'),
+    path('task_detail/', task_detail, name='task_detail'),
 ]

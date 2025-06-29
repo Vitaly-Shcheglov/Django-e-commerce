@@ -23,17 +23,6 @@ class HomeView(ListView):
     def get_queryset(self):
         return Product.objects.filter(is_published=True)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        json_file_path = os.path.join(os.path.dirname(__file__), 'data.json')
-
-        with open(json_file_path, 'r', encoding='utf-8') as file:
-            json_data = json.load(file)
-
-        context.update(json_data)
-
-        return context
-
 
 class ContactView(LoginRequiredMixin, View):
     def get(self, request):
