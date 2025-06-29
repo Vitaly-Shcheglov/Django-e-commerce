@@ -7,24 +7,23 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='BlogPost',
+            name="BlogPost",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=200)),
-                ('content', models.TextField()),
-                ('preview_image', models.ImageField(upload_to='blog_previews/')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('is_published', models.BooleanField(default=False)),
-                ('views_count', models.PositiveIntegerField(default=0)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("title", models.CharField(max_length=200)),
+                ("content", models.TextField()),
+                ("preview_image", models.ImageField(upload_to="blog_previews/")),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("is_published", models.BooleanField(default=False)),
+                ("views_count", models.PositiveIntegerField(default=0)),
             ],
             options={
-                'verbose_name': 'Блоговая запись',
-                'verbose_name_plural': 'Блоговые записи',
+                "verbose_name": "Блоговая запись",
+                "verbose_name_plural": "Блоговые записи",
             },
         ),
     ]

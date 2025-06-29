@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.conf import settings
 
+
 class Recipient(models.Model):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
@@ -20,6 +21,7 @@ class Recipient(models.Model):
 
     def __str__(self):
         return self.full_name
+
 
 class Message(models.Model):
     subject = models.CharField(max_length=255)
@@ -39,18 +41,22 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
+
 class Mailing(models.Model):
     STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
-        ('finished', 'Завершена'),
+        ("created", "Создана"),
+        ("started", "Запущена"),
+        ("finished", "Завершена"),
     ]
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="created")
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(Recipient)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, )
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = "Рассылка"
@@ -63,6 +69,7 @@ class Mailing(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class SendingAttempt(models.Model):
     attempt_time = models.DateTimeField(auto_now_add=True)

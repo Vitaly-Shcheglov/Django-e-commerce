@@ -17,6 +17,7 @@ redis = "^6.2.0"
 
 [tool.poetry.group.lint.dependencies]
 black = "^25.1.0"
+flake8 = "^7.3.0"
 
 [build-system]
 requires = ["poetry-core"]

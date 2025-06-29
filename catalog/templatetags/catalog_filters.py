@@ -2,6 +2,7 @@ from django import template
 
 register = template.Library()
 
+
 @register.filter
 def is_group(user, group_name):
     """Проверяет, принадлежит ли пользователь к группе."""

@@ -13,17 +13,17 @@ from smtplib import SMTPAuthenticationError
 
 class UserRegisterView(CreateView):
     form_class = UserRegistrationForm
-    template_name = 'users/register.html'
-    success_url = reverse_lazy('login')
+    template_name = "users/register.html"
+    success_url = reverse_lazy("login")
 
     def form_valid(self, form):
         user = form.save()
 
         try:
             send_mail(
-                'Добро пожаловать!',
-                'Спасибо за регистрацию на нашем сайте.',
-                'from@example.com',  # Замените на ваш реальный адрес
+                "Добро пожаловать!",
+                "Спасибо за регистрацию на нашем сайте.",
+                "from@example.com",  # Замените на ваш реальный адрес
                 [user.email],
                 fail_silently=False,
             )
@@ -38,30 +38,30 @@ class UserRegisterView(CreateView):
 
 
 def login_view(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect("home")
         else:
-            return render(request, 'users/login.html', {'error': 'Неверные учетные данные'})
-    return render(request, 'users/login.html')
+            return render(request, "users/login.html", {"error": "Неверные учетные данные"})
+    return render(request, "users/login.html")
 
 
 @login_required
 def profile_edit(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profile')
+            return redirect("profile")
     else:
         form = UserProfileForm(instance=request.user)
-    return render(request, 'users/profile_edit.html', {'form': form})
+    return render(request, "users/profile_edit.html", {"form": form})
 
 
 @login_required
 def profile_view(request):
-    return render(request, 'users/profile.html', {'user': request.user})
+    return render(request, "users/profile.html", {"user": request.user})
