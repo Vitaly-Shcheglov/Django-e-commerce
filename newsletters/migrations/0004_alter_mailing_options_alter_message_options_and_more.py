@@ -6,20 +6,44 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsletters', '0003_alter_mailing_start_time'),
+        ("newsletters", "0003_alter_mailing_start_time"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='mailing',
-            options={'permissions': [('can_view_mailing', 'Can view mailing'), ('can_edit_mailing', 'Can edit mailing'), ('can_delete_mailing', 'Can delete mailing')], 'verbose_name': 'Рассылка', 'verbose_name_plural': 'Рассылки'},
+            name="mailing",
+            options={
+                "permissions": [
+                    ("can_view_mailing", "Can view mailing"),
+                    ("can_edit_mailing", "Can edit mailing"),
+                    ("can_delete_mailing", "Can delete mailing"),
+                ],
+                "verbose_name": "Рассылка",
+                "verbose_name_plural": "Рассылки",
+            },
         ),
         migrations.AlterModelOptions(
-            name='message',
-            options={'permissions': [('can_view_message', 'Can view message'), ('can_edit_message', 'Can edit message'), ('can_delete_message', 'Can delete message')], 'verbose_name': 'Сообщение', 'verbose_name_plural': 'Сообщения'},
+            name="message",
+            options={
+                "permissions": [
+                    ("can_view_message", "Can view message"),
+                    ("can_edit_message", "Can edit message"),
+                    ("can_delete_message", "Can delete message"),
+                ],
+                "verbose_name": "Сообщение",
+                "verbose_name_plural": "Сообщения",
+            },
         ),
         migrations.AlterModelOptions(
-            name='recipient',
-            options={'permissions': [('can_view_recipient', 'Can view recipient'), ('can_edit_recipient', 'Can edit recipient'), ('can_delete_recipient', 'Can delete recipient')], 'verbose_name': 'Получатель', 'verbose_name_plural': 'Получатели'},
+            name="recipient",
+            options={
+                "permissions": [
+                    ("can_view_recipient", "Can view recipient"),
+                    ("can_edit_recipient", "Can edit recipient"),
+                    ("can_delete_recipient", "Can delete recipient"),
+                ],
+                "verbose_name": "Получатель",
+                "verbose_name_plural": "Получатели",
+            },
         ),
     ]

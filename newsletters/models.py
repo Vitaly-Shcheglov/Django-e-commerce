@@ -1,10 +1,13 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
+
 
 class Recipient(models.Model):
     email = models.EmailField(unique=True)
     full_name = models.CharField(max_length=255)
     comment = models.TextField(blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Получатель"
@@ -18,10 +21,12 @@ class Recipient(models.Model):
     def __str__(self):
         return self.full_name
 
+
 class Message(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = "Сообщение"
@@ -35,17 +40,24 @@ class Message(models.Model):
     def __str__(self):
         return self.subject
 
+
 class Mailing(models.Model):
     STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
-        ('finished', 'Завершена'),
+        ("created", "Создана"),
+        ("started", "Запущена"),
+        ("finished", "Завершена"),
     ]
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField(default=timezone.now)
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='created')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="created")
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(Recipient)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         verbose_name = "Рассылка"
@@ -54,16 +66,20 @@ class Mailing(models.Model):
             ("can_view_mailing", "Can view mailing"),
             ("can_edit_mailing", "Can edit mailing"),
             ("can_delete_mailing", "Can delete mailing"),
+            ("can_disable_mailing", "Can_disable_mailing"),
         ]
 
     def __str__(self):
-        return f"Рассылка: {self.message.subject} - Статус: {self.get_status_display()}"
+        return self.title
+
 
 class SendingAttempt(models.Model):
     attempt_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10)
     response = models.TextField()
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
+    recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.status} at {self.attempt_time}"

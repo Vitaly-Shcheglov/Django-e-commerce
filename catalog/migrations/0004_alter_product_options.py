@@ -6,12 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('catalog', '0003_alter_product_owner'),
+        ("catalog", "0003_alter_product_owner"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='product',
-            options={'permissions': (('can_unpublish_product', 'Может отменять публикацию продукта'),), 'verbose_name': 'Продукт', 'verbose_name_plural': 'Продукты'},
+            name="product",
+            options={
+                "permissions": (("can_unpublish_product", "Может отменять публикацию продукта"),),
+                "verbose_name": "Продукт",
+                "verbose_name_plural": "Продукты",
+            },
         ),
     ]

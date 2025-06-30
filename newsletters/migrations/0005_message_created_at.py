@@ -7,14 +7,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsletters', '0004_alter_mailing_options_alter_message_options_and_more'),
+        ("newsletters", "0004_alter_mailing_options_alter_message_options_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='message',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=datetime.datetime(2025, 6, 27, 4, 24, 31, 136523, tzinfo=datetime.timezone.utc)),
+            model_name="message",
+            name="created_at",
+            field=models.DateTimeField(
+                auto_now_add=True,
+                default=datetime.datetime(2025, 6, 27, 4, 24, 31, 136523, tzinfo=datetime.timezone.utc),
+            ),
             preserve_default=False,
         ),
     ]
