@@ -49,7 +49,7 @@ class Mailing(models.Model):
     ]
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(null=False)
     end_time = models.DateTimeField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES,default='Создана')
     message = models.ForeignKey(Message, on_delete=models.CASCADE)

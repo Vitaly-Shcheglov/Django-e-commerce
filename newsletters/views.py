@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.views import View
 from django.core.mail import send_mail
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
@@ -107,6 +108,7 @@ class MailingCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.owner = self.request.user
+        form.instance.start_time = timezone.now()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -217,10 +219,13 @@ def send_mailing(request, pk):
         send_mail(
             subject=mailing.title,
             message=mailing.description,
-            from_email='your_email@example.com',  # Укажите ваш действующий email
+            from_email='hallovit@yandex.ru',  # Укажите ваш действующий email
             recipient_list=emails,
             fail_silently=False,
         )
+
+        mailing.status = 'Запущена'
+        mailing.save()
 
         for recipient in recipients:
             SendingAttempt.objects.create(mailing=mailing, recipient=recipient, status='Успешно')
@@ -230,6 +235,22 @@ def send_mailing(request, pk):
         print(f"Ошибка при отправке: {e}")
 
     return redirect('mailing_list')
+
+
+class MailingStartView(LoginRequiredMixin, View):
+    def post(self, request, mailing_id):
+        mailing = get_object_or_404(Mailing, id=mailing_id)
+        mailing.status = 'Запущена'
+        mailing.save()
+        return redirect('mailing_detail', pk=mailing.id)
+
+
+class MailingFinishView(LoginRequiredMixin, View):
+    def post(self, request, mailing_id):
+        mailing = get_object_or_404(Mailing, id=mailing_id)
+        mailing.status = 'Завершена'
+        mailing.save()
+        return redirect('mailing_detail', pk=mailing.id)
 
 
 class MailingBlockView(LoginRequiredMixin, View):
