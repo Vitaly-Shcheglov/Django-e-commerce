@@ -51,7 +51,7 @@ class Mailing(models.Model):
     description = models.TextField(blank=True, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES,default='Создана')
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(Recipient)
     owner = models.ForeignKey(
@@ -75,7 +75,7 @@ class Mailing(models.Model):
 
 class SendingAttempt(models.Model):
     attempt_time = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, default='Успешно')
     response = models.TextField()
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
     recipient = models.ForeignKey(Recipient, on_delete=models.CASCADE)

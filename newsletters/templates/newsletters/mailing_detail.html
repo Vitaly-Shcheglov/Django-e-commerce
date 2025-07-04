@@ -21,7 +21,7 @@
 
         <div class="mt-4">
             {% if is_mailing_manager %}
-                <form action="{% url 'disable_mailing' mailing.id %}" method="POST" style="display:inline;">
+                <form method="post" action="{% url 'mailing_block' mailing.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Блокировать рассылку</button>
                 </form>

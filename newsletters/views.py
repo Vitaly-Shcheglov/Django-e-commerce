@@ -1,3 +1,4 @@
+from django.views import View
 from django.core.mail import send_mail
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -44,10 +45,6 @@ def statistics_view(request):
                 "unsuccessful_attempts": unsuccessful_attempts,
             }
         )
-
-    # context = {
-    #     "statistics": statistics,
-    # }
 
     return render(request, "newsletters/statistics.html", {"statistics": statistics})
 
@@ -220,7 +217,7 @@ def send_mailing(request, pk):
         send_mail(
             subject=mailing.title,
             message=mailing.description,
-            from_email='your_email@example.com', # Укажите свой email
+            from_email='your_email@example.com',  # Укажите ваш действующий email
             recipient_list=emails,
             fail_silently=False,
         )
@@ -232,14 +229,15 @@ def send_mailing(request, pk):
             SendingAttempt.objects.create(mailing=mailing, recipient=recipient, status='Не успешно')
         print(f"Ошибка при отправке: {e}")
 
-    return redirect('mailing_list')  #
-
-
-def disable_mailing(request, mailing_id):
-    mailing = get_object_or_404(Mailing, id=mailing_id)
-    mailing.status = "disabled"
-    mailing.save()
     return redirect('mailing_list')
+
+
+class MailingBlockView(LoginRequiredMixin, View):
+    def post(self, request, mailing_id):
+        mailing = get_object_or_404(Mailing, id=mailing_id)
+        mailing.status = 'Завершена'
+        mailing.save()
+        return redirect('mailing_detail', pk=mailing.id)
 
 
 def task_detail(request):
