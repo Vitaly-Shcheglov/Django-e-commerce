@@ -49,9 +49,9 @@ class Mailing(models.Model):
     ]
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    start_time = models.DateTimeField(default=timezone.now)
+    start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="created")
+    status = models.CharField(max_length=10)
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     recipients = models.ManyToManyField(Recipient)
     owner = models.ForeignKey(
@@ -70,7 +70,7 @@ class Mailing(models.Model):
         ]
 
     def __str__(self):
-        return self.title
+        return f"Рассылка № {self.pk} от {self.start_time}"
 
 
 class SendingAttempt(models.Model):

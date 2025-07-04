@@ -21,23 +21,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'contacts' %}">Контакты</a>
             </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'message_list' %}">Сообщения</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'mailing_list' %}">Рассылки</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'recipient_list' %}">Получатели</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'statistics' %}">Статистика попыток рассылок</a>
-                </li>
-                <li class="nav-item">
-                    <li><a href="{% url 'user_list' %}">Список пользователей</a></li>
-                </li>
-            {% endif %}
         </ul>
     </nav>
     <script src="/static/js/bootstrap.bundle.min.js"></script>

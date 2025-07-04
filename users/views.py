@@ -73,7 +73,8 @@ def is_mailing_manager(user):
 @login_required
 @user_passes_test(is_mailing_manager)
 def user_list(request):
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.exclude(is_superuser=True)
+    users = users.exclude(groups__name__in=['Product Moderator', 'Content Manager', 'Mailing Manager'])
     return render(request, "users/user_list.html", {"users": users})
 
 

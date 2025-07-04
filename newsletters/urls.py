@@ -17,9 +17,13 @@ from .views import (
     RecipientEditView,
     RecipientDeleteView,
     task_detail,
+    disable_mailing,
+    send_mailing,
+    mailing_service_view,
 )
 
 urlpatterns = [
+    path('', mailing_service_view, name='mailing_service'),
     path("statistics/", statistics_view, name="statistics"),
     path("recipients/", RecipientListView.as_view(), name="recipient_list"),
     path("recipients/create/", RecipientCreateView.as_view(), name="create_recipient"),
@@ -36,10 +40,7 @@ urlpatterns = [
     path("mailings/<int:pk>/", MailingDetailView.as_view(), name="mailing_detail"),
     path("mailings/edit/<int:pk>/", MailingEditView.as_view(), name="edit_mailing"),
     path("mailings/delete/<int:pk>/", MailingDeleteView.as_view(), name="delete_mailing"),
-    path(
-        "mailings/send/<int:pk>/",
-        lambda request, pk: __import__("newsletters.views").send_mailing(request, pk),
-        name="send_mailing",
-    ),
+    path("mailings/send/<int:pk>/", send_mailing, name="send_mailing"),
+    path("mailings/disable/<int:mailing_id>/", disable_mailing, name="disable_mailing"),
     path("task_detail/", task_detail, name="task_detail"),
 ]

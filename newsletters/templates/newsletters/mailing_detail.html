@@ -20,24 +20,25 @@
         </ul>
 
         <div class="mt-4">
-            <a href="{% url 'edit_mailing' mailing.id %}" class="btn btn-secondary">Изменить</a>
-            <form action="{% url 'delete_mailing' mailing.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Удалить</button>
-            </form>
-            <form action="{% url 'send_mailing' mailing.id %}" method="POST" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Отправить рассылку</button>
-            </form>
-
-            {% if request.user.groups.filter(name='Mailing Manager').exists %}
+            {% if is_mailing_manager %}
                 <form action="{% url 'disable_mailing' mailing.id %}" method="POST" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-warning">Блокировать рассылку</button>
+                </form>
+            {% endif %}
+
+            {% if request.user == mailing.owner %}
+                <a href="{% url 'edit_mailing' mailing.id %}" class="btn btn-secondary">Изменить</a>
+                <form action="{% url 'delete_mailing' mailing.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <form action="{% url 'send_mailing' mailing.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Отправить рассылку</button>
                 </form>
             {% endif %}
             <a href="{% url 'mailing_list' %}" class="btn btn-primary">Назад к списку рассылок</a>
         </div>
     </div>
 {% endblock %}
-
