@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Статистика рассылок{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Статистика рассылок</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Название рассылки</th>
+                    <th>Успешные попытки</th>
+                    <th>Неуспешные попытки</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in statistics %}
+                    <tr>
+                        <td>{{ stat.mailing.title }}</td>
+                        <td>{{ stat.successful_attempts }}</td>
+                        <td>{{ stat.unsuccessful_attempts }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3">Нет доступных данных для статистики.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'mailing_list' %}" class="btn btn-secondary">Назад к списку рассылок</a>
+    </div>
+{% endblock %}

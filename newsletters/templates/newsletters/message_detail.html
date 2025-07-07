@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Детали сообщения{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ message.subject }}</h1>
+        <p><strong>Тело сообщения:</strong> {{ message.body }}</p>
+        <p><strong>Дата создания:</strong> {{ message.created_at }}</p>
+
+        <div class="mt-4">
+            {% if request.user == message.owner %}
+                <a href="{% url 'edit_message' message.id %}" class="btn btn-secondary">Изменить</a>
+                <form action="{% url 'delete_message' message.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            {% endif %}
+
+            <a href="{% url 'message_list' %}" class="btn btn-primary mt-3">Назад к списку сообщений</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Сервис рассылок{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Сервис рассылок</h1>
+
+        <h3>Статистика:</h3>
+        <ul>
+            <li>Общее количество рассылок: {{ total_mailings }}</li>
+            <li>Количество активных рассылок: {{ active_mailings }}</li>
+            <li>Количество уникальных получателей: {{ unique_recipients }}</li>
+        </ul>
+        {% if is_mailing_manager %}
+                    <a href="{% url 'user_list' %}" class="p-2 btn btn-outline-primary">Список пользователей</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <a href="{% url 'message_list' %}" class="p-2 btn btn-outline-primary">Список сообщений</a>
+                <a href="{% url 'mailing_list' %}" class="p-2 btn btn-outline-primary">Список рассылок</a>
+                <a href="{% url 'recipient_list' %}" class="p-2 btn btn-outline-primary">Список получателей</a>
+                {% if not is_mailing_manager %}
+                    <a href="{% url 'statistics' %}" class="p-2 btn btn-outline-primary">Статистика</a>
+                {% endif %}
+
+                <button type="submit" class="p-2 btn btn-danger">Выход</button>
+            </form>
+        {% else %}
+            <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+        </div>
+        <div class="container">
+            <h4>Техническое задание</h4>
+                {% include 'newsletters/task_card.html' %}
+        </div>
+    </div>
+{% endblock %}

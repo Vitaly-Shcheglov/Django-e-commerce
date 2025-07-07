@@ -14,12 +14,18 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
         <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
-        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Выход</button>
-        </form>
+        <a href="{% url 'mailing_service' %}" class="p-2 btn btn-outline-primary">Сервис рассылок</a>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="p-2 btn btn-danger">Выход</button>
+            </form>
+        {% else %}
+            <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+
     </nav>
 </div>
 
@@ -97,6 +103,11 @@
                     <li><a class="text-muted" href="/contacts/">Контакты</a></li>
                 </ul>
             </div>
+        </div>
+        <div class="row mt-4">
+        <div class="col-12">
+            <h5>{{ title }}</h5>
+            <p>{{ description }}</p>
         </div>
     </footer>
 </div>
