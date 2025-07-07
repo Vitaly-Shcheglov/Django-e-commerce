@@ -106,6 +106,11 @@ class MailingCreateView(CreateView):
     form_class = MailingForm
     template_name = "newsletters/create_mailing.html"
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         form.instance.owner = self.request.user
         form.instance.start_time = timezone.now()

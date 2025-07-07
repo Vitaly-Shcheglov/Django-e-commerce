@@ -15,6 +15,13 @@ class MessageForm(forms.ModelForm):
 
 
 class MailingForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+        self.fields['message'].queryset = self.fields['message'].queryset.filter(owner=user)
+        self.fields['recipients'].queryset = self.fields['recipients'].queryset.filter(owner=user)
+
+
     class Meta:
         model = Mailing
         fields = ["message", "recipients", "end_time"]
