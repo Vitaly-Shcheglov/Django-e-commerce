@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}{% if post %}Редактировать запись{% else %}Добавить запись{% endif %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% if post %}Редактировать{% else %}Добавить{% endif %} запись в блог</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{% if post %}Обновить{% else %}Добавить{% endif %}</button>
+        </form>
+    </div>
+{% endblock %}

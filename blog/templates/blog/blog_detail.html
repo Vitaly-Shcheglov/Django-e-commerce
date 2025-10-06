@@ -1,0 +1,33 @@
+{% extends 'catalog/base.html' %}
+{% load blog_filters %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p><strong>Опубликовано:</strong> {{ post.created_at }}</p>
+        <p><strong>Количество просмотров:</strong> {{ post.views_count }}</p>
+
+        {% if post.preview_image %}
+            <img src="{{ post.preview_image.url }}" alt="{{ post.title }}" class="img-fluid">
+        {% endif %}
+
+        <p>{{ post.content }}</p>
+
+        {% if request.user|is_group:"Content manager group" %}
+            <div class="post-actions">
+                <form action="{% url 'blog_edit' post.pk %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Редактировать</button>
+                </form>
+                <form action="{% url 'blog_delete' post.pk %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот пост?');">Удалить</button>
+                </form>
+            </div>
+        {% endif %}
+        <a href="{% url 'blog_list' %}" class="btn btn-primary">Назад к списку</a>
+    </div>
+{% endblock %}
+

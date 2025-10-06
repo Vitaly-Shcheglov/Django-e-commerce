@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skystore</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
+    <nav class="ms-5">
+        <a class="p-2 btn btn-outline-primary" href="/">Каталог</a>
+        <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
+        <a href="{% url 'mailing_service' %}" class="p-2 btn btn-outline-primary">Сервис рассылок</a>
+
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="p-2 btn btn-danger">Выход</button>
+            </form>
+        {% else %}
+            <a class="p-2 btn btn-outline-primary" href="{% url 'login' %}">Вход в систему</a>
+            <a class="p-2 btn btn-outline-primary" href="{% url 'register' %}">Регистрация</a>
+        {% endif %}
+
+    </nav>
+</div>
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Skystore</h1>
+    <p class="lead">Skystore - это отличный вариант хранения ваших плагинов и примеров кода, который вы бы хотели
+        продать</p>
+</div>
+
+    <div class="row text-center mt-4">
+        <h4>Список товаров</h4>
+        {% for product in products %}
+            <div class="col-3">
+                <div class="product-card card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h2>{{ product.name }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+                        <p>{{ product.description|truncatewords:20 }}</p>
+                        <a href="{% url 'product_detail' product.pk %}" class="btn btn-outline-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Нет доступных товаров.</p>
+        {% endfor %}
+    </div>
+
+    <div>
+       {% for product in products %}
+           <!-- карточка товара -->
+       {% endfor %}
+   </div>
+
+    <div class="pagination">-->
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">предыдущая</a>
+        {% endif %}
+
+        <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.</span>
+
+         {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">следующая</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">последняя &raquo;</a>
+        {% endif %}
+    </div>
+
+    <footer class="pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                SkyStore
+                <small class="d-block mb-3 text-muted">&copy; 2023</small>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Категории</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Рассылки</a></li>
+                    <li><a class="text-muted" href="#">Телеграм боты</a></li>
+                    <li><a class="text-muted" href="#">Полезные утилиты</a></li>
+                    <li><a class="text-muted" href="#">Веб-приложения</a></li>
+                    <li><a class="text-muted" href="#">Микросервисы</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>Дополнительно</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="#">Мы пишем</a></li>
+                </ul>
+            </div>
+            <div class="col-6 col-md">
+                <h5>О нас</h5>
+                <ul class="list-unstyled text-small">
+                    <li><a class="text-muted" href="/contacts/">Контакты</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row mt-4">
+        <div class="col-12">
+            <h5>{{ title }}</h5>
+            <p>{{ description }}</p>
+        </div>
+    </footer>
+</div>
+
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

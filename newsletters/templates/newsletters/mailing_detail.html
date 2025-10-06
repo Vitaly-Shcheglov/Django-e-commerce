@@ -1,0 +1,44 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Детали рассылки{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{{ mailing.title }}</h1>
+        <p><strong>Описание:</strong> {{ mailing.description }}</p>
+        <p><strong>Статус:</strong> {{ mailing.get_status_display }}</p>
+        <p><strong>Дата начала:</strong> {{ mailing.start_time }}</p>
+        <p><strong>Дата окончания:</strong> {{ mailing.end_time }}</p>
+
+        <h2>Получатели:</h2>
+        <ul>
+            {% for recipient in mailing.recipients.all %}
+                <li>{{ recipient.full_name }} ({{ recipient.email }})</li>
+            {% empty %}
+                <li>Нет получателей для этой рассылки.</li>
+            {% endfor %}
+        </ul>
+
+        <div class="mt-4">
+            {% if is_mailing_manager %}
+                <form method="post" action="{% url 'mailing_block' mailing.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Блокировать рассылку</button>
+                </form>
+            {% endif %}
+
+            {% if request.user == mailing.owner %}
+                <a href="{% url 'edit_mailing' mailing.id %}" class="btn btn-secondary">Изменить</a>
+                <form action="{% url 'delete_mailing' mailing.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+                <form action="{% url 'send_mailing' mailing.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Отправить рассылку</button>
+                </form>
+            {% endif %}
+            <a href="{% url 'mailing_list' %}" class="btn btn-primary">Назад к списку рассылок</a>
+        </div>
+    </div>
+{% endblock %}
